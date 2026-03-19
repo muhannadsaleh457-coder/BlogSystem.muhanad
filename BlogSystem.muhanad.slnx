@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="BlogSystem.muhanad.Abstractions/BlogSystem.muhanad.Abstractions.csproj" />
+    <Project Path="BlogSystem.muhanad.Domain/BlogSystem.muhanad.Domain.csproj" />
+    <Project Path="BlogSystem.muhanad.Service/BlogSystem.muhanad.Services.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="BlogSystem.muhanad.Presentation/BlogSystem.muhanad.Presentation.csproj" />
+    <Project Path="BlogSystem.muhanad.Presistence/BlogSystem.muhanad.Presistence.csproj" />
+  </Folder>
+  <Project Path="BlogSystem.muhanad.Shared/BlogSystem.muhanad.Shared.csproj" />
+  <Project Path="BlogSystem.muhanad/BlogSystem.muhanad.Web.csproj" />
+</Solution>
