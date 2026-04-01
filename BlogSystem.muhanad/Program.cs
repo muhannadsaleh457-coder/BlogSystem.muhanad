@@ -10,6 +10,7 @@ using BlogSystem.muhanad.Services.Auth;
 using BlogSystem.muhanad.Services.Email;
 using BlogSystem.muhanad.Services.Profiles;
 using BlogSystem.muhanad.Shared.Options;
+using BlogSystem.muhanad.Web.Exstensions;
 using BlogSystem.muhanad.Web.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,64 +26,7 @@ namespace BlogSystem.muhanad
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
-           
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-           
-
-            builder.Services.Configure<JwtOption>(builder.Configuration.GetSection("JwtOptions"));
-            builder.Services.Configure<EmailSettingsOptions>(builder.Configuration.GetSection("EmailSettings"));
-
-
-
-            builder.Services.AddIdentityCore<IdentityUser>(op =>
-            {
-                op.User.RequireUniqueEmail = true;
-            }).AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<BlogDbContext>()
-            .AddDefaultTokenProviders(); 
-             
-            
-
-
-            builder.Services.AddScoped<IServiceManger, ServiceManger>();
-            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddScoped<IMailService,EmailService>();
-            builder.Services.AddAutoMapper(a => a.AddProfile(new PostProfile()));
-            builder.Services.AddAutoMapper(a => a.AddProfile(new CommentProfile()));
-
-
-            builder.Services.AddDbContext<BlogDbContext>( op =>
-            {
-                op.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            builder.Services.AddScoped<IDbIntlizer, DbIntlizer>();
-
-
-            var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOption>();
-
-            builder.Services.AddAuthentication(op =>
-            {
-                op.DefaultAuthenticateScheme = "Bearer";
-                op.DefaultChallengeScheme = "Bearer";
-            }).AddJwtBearer(op =>
-            {
-                op.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidateAudience = true,
-                    ValidAudience = jwtOptions.Audience,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
-                };
-            });
+            builder.Services.AddServices(builder.Configuration);
 
             var app = builder.Build();
 
